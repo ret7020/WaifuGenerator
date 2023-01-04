@@ -1,0 +1,4 @@
+aiogram
+diffusers
+transformers
+accelerate
