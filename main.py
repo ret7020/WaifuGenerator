@@ -6,6 +6,9 @@ from torch import autocast
 from diffusers import StableDiffusionPipeline
 import transformers
 
+def dummy(images, **kwargs):
+      return images, False
+      
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 
@@ -28,15 +31,20 @@ async def waifu(message: types.Message):
         await message.answer_photo(photo, caption="Напишите любой текст (на английском, указывая параметры через запятую.\nНапример: looking at viewer, masterpiece, best quality, bright hair, blue eyes, outdoors\nМетодичка по параметрам: /prompts")
 
 
+@dp.message_handler(commands=['prompts'])
+async def waifu(message: types.Message):
+    with open('./images/0.png', 'rb') as photo:
+        await message.answer_photo(photo, caption="F")
+
+
+
 @dp.message_handler()
 async def echo(message: types.Message):
-  prompt = "looking at viewer, masterpiece, best quality, bright hair, blue eyes, medium boobs in mini skirt, indoors, popular, beautiful"
+  prompt = message.text
 
   # Bypass NSFW checker :)
   # Only for work; freelance yepta
 
-  def dummy(images, **kwargs):
-      return images, False
   pipe.safety_checker = dummy
 
   with autocast("cuda"):
