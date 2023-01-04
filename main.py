@@ -8,7 +8,7 @@ import transformers
 
 def dummy(images, **kwargs):
       return images, False
-      
+
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 
@@ -48,9 +48,9 @@ async def echo(message: types.Message):
   pipe.safety_checker = dummy
 
   with autocast("cuda"):
-      image = pipe(prompt, guidance_scale=6).images[0]
-  file_id = random.randint(10000, 10000000)
-  image.save(f"./tmp_gen/{file_id}.png")
+      await image = pipe(prompt, guidance_scale=6).images[0]
+  await file_id = random.randint(10000, 10000000)
+  await image.save(f"./tmp_gen/{file_id}.png")
 
   with open(f'./tmp_gen/{file_id}.png', 'rb') as photo:
       await message.reply_photo(photo, caption='Generated waifu image')
